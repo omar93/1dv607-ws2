@@ -13,7 +13,6 @@ public class Controller {
     }
 
     public void startMenu(SimpleView view,Menu menu) {
-        menu.setBorderStyle("-");
         view.showMenuInformation(menu.getInstructions(), menu.getBorderStyle());
         view.showMenuAlternatives(menu.getAlternatives());
     }
