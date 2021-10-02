@@ -10,5 +10,6 @@ public class App {
 
         controller.welcomeUser(view,menu);
         controller.startMenu(view,menu);
+        controller.getUserInput(view, menu);
     }
 }
