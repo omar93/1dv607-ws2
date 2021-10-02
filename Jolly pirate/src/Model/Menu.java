@@ -1,12 +1,17 @@
 package Model;
 
+import java.util.Scanner;
+
 public class Menu {
     
     private String greeting = 
-    "Welcome to the jolly pirate \n"+
-    "use the number below to navigate the menu";
+    "******************************* \n"+
+    "* Welcome to the jolly pirate * \n"+
+    "*******************************";
 
-    private String menu = "1-9";
+    private String menu = "use the numbers 1-9 to navigate";
+    
+    Scanner sc = new Scanner(System.in);
     
     public Menu() {
 

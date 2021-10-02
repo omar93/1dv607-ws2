@@ -3,26 +3,19 @@ import Model.*;
 import View.*;
 
 public class Controller {
-
-    private SimpleView view;
-    private Menu menu;
-
     
-    public Controller(SimpleView view,Menu menu) {
-        this.view = view;
-        this.menu = menu;
+    public Controller() {
     }
 
-    public void startProgram() {
-        this.welcomeUser();
-        this.startMenu();
+    public void welcomeUser(SimpleView view,Menu menu) {
+        view.showGreeting(menu.getGreeting());
     }
 
-    public void welcomeUser() {
-        view.showGreeting(this.menu.getGreeting());
+    public void startMenu(SimpleView view,Menu menu) {
+        view.showMenu(menu.getMenu());
     }
 
-    public void startMenu() {
-        view.showMenu(this.menu.getMenu());
+    public void getUserInput() {
+
     }
 }
