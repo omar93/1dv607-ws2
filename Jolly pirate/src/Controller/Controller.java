@@ -8,11 +8,14 @@ public class Controller {
     }
 
     public void welcomeUser(SimpleView view,Menu menu) {
-        view.showGreeting(menu.getGreeting());
+        menu.setBorderStyle("*");
+        view.showMenuInformation(menu.getGreeting(), menu.getBorderStyle());
     }
 
     public void startMenu(SimpleView view,Menu menu) {
-        view.showMenu(menu.getMenu());
+        menu.setBorderStyle("-");
+        view.showMenuInformation(menu.getInstructions(), menu.getBorderStyle());
+        view.showMenuAlternatives(menu.getAlternatives());
     }
 
     public void getUserInput() {

@@ -3,13 +3,20 @@ package Model;
 import java.util.Scanner;
 
 public class Menu {
-    
-    private String greeting = 
-    "******************************* \n"+
-    "* Welcome to the jolly pirate * \n"+
-    "*******************************";
 
-    private String menu = "use the numbers 1-9 to navigate";
+    private String borderStyle;
+    
+    private String greeting = "Welcome to the jolly pirate.";
+    
+    private String instructions = 
+    "Use the numbers 1-9 to navigate. After entering a number, press Enter.";
+    
+    private String alternatives = 
+    "1) Create a new memeber\n"+
+    "2) Show compact list\n"+
+    "3) Show verbose list\n"+
+    "4) Delete a member\n"+
+    "5) Register a boat\n";
     
     Scanner sc = new Scanner(System.in);
     
@@ -21,7 +28,20 @@ public class Menu {
         return this.greeting;
     }
 
-    public String getMenu() {
-        return this.menu;
+    public String getInstructions() {
+        return this.instructions;
+    }
+
+    public String getAlternatives() {
+        return this.alternatives;
+    }
+
+
+    public void setBorderStyle(String style) {
+        this.borderStyle = style;
+    }
+
+    public String getBorderStyle() {
+        return this.borderStyle;
     }
 }

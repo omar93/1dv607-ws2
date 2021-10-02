@@ -6,11 +6,24 @@ public class SimpleView {
         
     }
     
-    public void showGreeting(String greeting) {
-        System.out.println(greeting);
+    public void showMenuInformation(String text, String borderStyle) {
+        this.printBorder(text.length(),borderStyle);
+        this.printGreeting(text);
+        this.printBorder(text.length(),borderStyle);
+        System.out.println("");
+    }
+
+    public void showMenuAlternatives(String alternatives) {
+        System.out.println(alternatives);
     }
     
-    public void showMenu(String menu) {
-        System.out.println(menu);
+    private void printGreeting(String greeting) {
+        System.out.println("\n| "+greeting+" |");
+    }
+
+    private void printBorder(int size, String style) {
+        for(int i = 0; i < size+4; i++) {
+            System.out.print(style);
+        }
     }
 }
