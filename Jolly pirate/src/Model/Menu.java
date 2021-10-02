@@ -6,7 +6,7 @@ public class Menu {
     "Welcome to the jolly pirate \n"+
     "use the number below to navigate the menu";
 
-    private String menu = "1-8";
+    private String menu = "1-9";
     
     public Menu() {
 
