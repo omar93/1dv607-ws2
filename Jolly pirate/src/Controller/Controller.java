@@ -22,7 +22,7 @@ public class Controller {
         int choice = 0;
         while(choice != 5) {
             switch (choice) {
-                case 1:  choice = 1;
+                case 1:  view.showMenuInformation(menu.getMemberMenu(), menu.getBorderStyle());
                          break;
                 case 2:  choice = 2;
                          break;
@@ -34,7 +34,6 @@ public class Controller {
                          break;
             }
             choice = sc.nextInt();
-            System.out.println("\nchoice: " + choice);
         }
         sc.close();
     }

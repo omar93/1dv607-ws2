@@ -17,6 +17,8 @@ public class Menu {
     "3) Show verbose list\n"+
     "4) Delete a member\n"+
     "5) Register a boat\n";
+
+    private String createMember = "member creation";
     
     Scanner sc = new Scanner(System.in);
     
@@ -34,6 +36,10 @@ public class Menu {
 
     public String getAlternatives() {
         return this.alternatives;
+    }
+
+    public String getMemberMenu() {
+        return this.createMember;
     }
 
 
