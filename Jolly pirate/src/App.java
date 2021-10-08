@@ -7,9 +7,7 @@ public class App {
         SimpleView view = new SimpleView();
         Model.Menu menu = new Model.Menu();
         Controller controller = new Controller();
-
-        controller.welcomeUser(view,menu);
+        
         controller.startMenu(view,menu);
-        controller.getUserInput(view, menu);
     }
 }

@@ -1,29 +1,55 @@
 package View;
 
+import java.util.Scanner;
+
 public class SimpleView {
     
-    public SimpleView() {
+    MainMenu mainMenu = new MainMenu();
+    UserMenu userMenu = new UserMenu();
         
-    }
-    
-    public void showMenuInformation(String text, String borderStyle) {
-        this.printBorder(text.length(),borderStyle);
-        this.printGreeting(text,borderStyle);
-        this.printBorder(text.length(),borderStyle);
-        System.out.println();
+    public void showMainMenu() {
+        mainMenu.showMenu();
     }
 
-    public void showMenuAlternatives(String alternatives) {
-        System.out.println(alternatives);
-    }
-    
-    private void printGreeting(String greeting, String borderStyle) {
-        System.out.println("| " + greeting + " |");
+    public void showUserMenu() {
+        userMenu.showUserMenu();
+        getUserMenuInput();
     }
 
-    private void printBorder(int size, String style) {
-        for(int i = 0; i < size+4; i++) {
-            System.out.print((i == (size+3)) ?  style+"\n" : style);
+    public void getMainMenuInput() {
+        Scanner sc = new Scanner(System.in);
+        int choice = 0;
+        while(choice != 9) {
+            switch (choice) {
+                case 1:  showMainMenu();break;
+                case 2:  showUserMenu();break;
+            }
+            choice = sc.nextInt();
         }
+        sc.close();
     }
+
+    public void getUserMenuInput() {
+        Scanner sc = new Scanner(System.in);
+        int choice = 0;
+        while(choice != 9) {
+            switch (choice) {
+                case 1:  createUser();break;
+                case 2:  deleteUser();break;
+            }
+            choice = sc.nextInt();
+        }
+        sc.close();
+    }
+
+    private void deleteUser() {
+        System.out.println("DELETE USER");
+    }
+
+    private void createUser() {
+        System.out.println("CREATE NEW USER");
+    }
+
+
+
 }
