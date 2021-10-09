@@ -1,13 +1,12 @@
-import View.SimpleView;
+import Model.Model;
 import Controller.Controller;
 
 public class App {
     public static void main(String[] args) throws Exception {
 
-        SimpleView view = new SimpleView();
-        Model.Menu menu = new Model.Menu();
+        Model model = new Model();
         Controller controller = new Controller();
         
-        controller.startMenu(view,menu);
+        controller.startMenu(model);
     }
 }

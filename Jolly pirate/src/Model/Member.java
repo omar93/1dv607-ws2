@@ -5,11 +5,13 @@ public class Member {
     private String name;
     private String pn;
 	private int boats = 5;
+    private int id;
 
-    public Member(String name, String pn, int BoatAmmount) {
+    public Member(String name, String pn) {
 		this.name = name;
 		this.pn = pn;
-        this.boats = BoatAmmount;
+        this.boats = 6;
+        this.id = 1337;
 	}
 
     public Member() {
@@ -25,6 +27,8 @@ public class Member {
     // Get & Set Personal Number
 	public String getPn() { return this.pn; }
 	public void setPn(String newPn) { this.pn = newPn;}
+
+    public int getId() { return this.id; }
 
     // Get & Set BoatAmmount
 	public int getBoats() { return this.boats; }

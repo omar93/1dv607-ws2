@@ -1,0 +1,6 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "Jolly pirate/lib/gson-2.8.2.jar"
+    ]
+}
