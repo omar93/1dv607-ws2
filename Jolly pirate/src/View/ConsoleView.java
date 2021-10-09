@@ -25,13 +25,11 @@ public class ConsoleView {
         System.out.println("Enter personal number:");
 		this.pn = pnScanner();
         System.out.println("New user: " + name+" PN: "+pn);
-        showMainMenu();
     }
 
-    public void deleteMember() {
+    public void showIdInput() {
         System.out.println("Enter user ID:");
         this.id = idScanner();
-        showMainMenu();
     }
 
     public void printCompact(Member member) {

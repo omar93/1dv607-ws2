@@ -1,5 +1,7 @@
 package Controller;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.util.List;
 import java.util.Scanner;
 
@@ -11,9 +13,29 @@ public class Controller {
 
     private Scanner scanner = new Scanner(System.in);
     View.ConsoleView view = new ConsoleView();
+    View.BoatView boatView = new View.BoatView();
+
     public void startMenu(Model model) {
+        initializeFiles();
         view.showMainMenu();
         getUserInput(model);
+    }
+
+    private void initializeFiles() {
+        try {
+            File myObj = new File("data.json");
+            if (myObj.createNewFile()) {
+              FileWriter myWriter = new FileWriter("data.json");
+              myWriter.append("[{}]");
+              myWriter.close();
+              System.out.println("File created: " + myObj.getName());
+            } else {
+              System.out.println("File already exists.");
+            }
+          } catch (Exception e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+          }
     }
 
     private void getUserInput(Model model) {
@@ -23,13 +45,55 @@ public class Controller {
                 case 2:  showListCompact(model);break;
                 case 3:  showListVerbose(model);break;
                 case 4:  deleteUser(model);break;
+                case 5:  changeMemberInfo(model);break;
+                case 6:  showMemberInfo(model);break;
+                case 7:  registerNewBoat(model);break;
+                case 8:  deleteBoat(model);break;
+                case 9:  changeBoat(model);break;
                 case 0:  System.exit(0);break;
             }
             getUserInput(model);
     }
 
+    private void registerNewBoat(Model model) {
+        Member selecedMember = new Member();
+        view.showIdInput();
+        List <Member> list = model.getAllMembers();
+        boatView.showInputForm();
+        for (int i = 0; i < list.size(); i++) {
+            if(list.get(i).getId() == view.getId()) {
+                selecedMember.set(list.get(i));
+            }
+        }
+        model.registerBoat(boatView.getLength(),boatView.getType(),boatView.getBoatId(),selecedMember);
+    }
+
+    private void changeBoat(Model model) {
+    }
+
+    private void deleteBoat(Model model) {
+    }
+
+
+    private void changeMemberInfo(Model model) {
+    }
+
+    // Look at a specific member’s information
+    private void showMemberInfo(Model model) {
+        view.showIdInput();
+        model.readDataFromJson();
+        List <Member> list = model.getAllMembers();
+        for (int i = 0; i < list.size(); i++) {
+            if(list.get(i).getId() == view.getId()) {
+                view.printVerbose(list.get(i));
+            }
+        }
+        view.showMainMenu();
+
+    }
+
     private void deleteUser(Model model) {
-        view.deleteMember();
+        view.showIdInput();
         model.readDataFromJson();
         List <Member> list = model.getAllMembers();
         for (int i = 0; i < list.size(); i++) {
@@ -38,11 +102,13 @@ public class Controller {
             }
         }
         model.removeMember(list);
+        view.showMainMenu();
     }
 
     private void createNewMember(Model model) {
         view.createNewMember();
         model.createNewUser(view.getName(), view.getPn(), ConsoleView.counter);
+        view.showMainMenu();
     }
 
     private void showListCompact(Model model) {
@@ -55,6 +121,7 @@ public class Controller {
                 view.printCompact(list.get(i));
             }
         }
+        view.showMainMenu();
     }
 
     private void showListVerbose(Model model) {
@@ -67,6 +134,7 @@ public class Controller {
                 view.printVerbose(list.get(i));
             }
         }
+        view.showMainMenu();
     }
 
 }
