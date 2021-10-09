@@ -11,17 +11,26 @@ public class ConsoleView {
     private Scanner scanner = new Scanner(System.in);
     private String name;
     private String pn;
+    private int id;
+    public static int counter;
         
     public void showMainMenu() {
         mainMenu.showMenu();
     }
 
     public void createNewMember() {
+        counter++;
         System.out.println("Enter name:");
-        name = getNameFromScanner();
+        this.name = NameFromScanner();
         System.out.println("Enter personal number:");
-		pn = pnScanner();
+		this.pn = pnScanner();
         System.out.println("New user: " + name+" PN: "+pn);
+        showMainMenu();
+    }
+
+    public void deleteMember() {
+        System.out.println("Enter user ID:");
+        this.id = idScanner();
         showMainMenu();
     }
 
@@ -41,7 +50,7 @@ public class ConsoleView {
     }
 
     // Scans name returns it
-	private String getNameFromScanner() {
+	private String NameFromScanner() {
 		String name = scanner.nextLine();
 		return name;
 	}
@@ -52,12 +61,22 @@ public class ConsoleView {
 		return pn;
 	}
 
+    // Scans id and returns it
+	private int idScanner() {
+		int id = scanner.nextInt();
+		return id;
+	}
+
     public String getName() {
         return this.name;
     }
     public String getPn() {
         return this.pn;
     }
+    public int getId() {
+        return this.id;
+    }
+
 
 
 

@@ -7,11 +7,11 @@ public class Member {
 	private int boats = 5;
     private int id;
 
-    public Member(String name, String pn) {
+    public Member(String name, String pn,int id) {
 		this.name = name;
 		this.pn = pn;
         this.boats = 6;
-        this.id = 1337;
+        this.id = id;
 	}
 
     public Member() {
