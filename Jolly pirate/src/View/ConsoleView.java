@@ -4,10 +4,10 @@ import java.util.Scanner;
 
 import Model.Member;
 
-public class ConsoleView {
+public class ConsoleView extends Menu {
     
-    MainMenu mainMenu = new MainMenu();
-    UserMenu userMenu = new UserMenu();
+    Messages messages = new Messages();
+
     private Scanner scanner = new Scanner(System.in);
     private String name;
     private String pn;
@@ -15,7 +15,15 @@ public class ConsoleView {
     public static int counter;
         
     public void showMainMenu() {
-        mainMenu.showMenu();
+        System.out.println(messages.getMenuAlternatives());
+    }
+
+    public void showGreeting() {
+        showWithBorder(messages.getGreeting());
+    }
+
+    public void showInstructions() {
+        showWithBorder(messages.getInstructions());
     }
 
     public void createNewMember() {

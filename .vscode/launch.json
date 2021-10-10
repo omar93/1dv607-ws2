@@ -15,7 +15,7 @@
             "name": "Launch App",
             "request": "launch",
             "mainClass": "App",
-            "console": "externalTerminal",
+            "console": "integratedTerminal",
             "projectName": "1dv607-ws2_52e16751"
         }
     ]

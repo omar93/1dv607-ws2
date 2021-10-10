@@ -1,14 +1,6 @@
 package View;
 
 public class Menu {
-    
-    public void showInstructions(String instructions) {
-        this.showWithBorder(instructions);
-    }
-
-    public void showAlternatives(String alternatives) {
-        System.out.println(alternatives);
-    }
 
     public void showWithBorder (String message) {
         this.printBorder(message.length());

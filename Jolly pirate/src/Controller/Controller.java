@@ -2,8 +2,12 @@ package Controller;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.io.IOException;  // Import the IOException class to handle errors
+
+import com.google.gson.Gson;
 
 import Model.Member;
 import Model.Model;
@@ -17,25 +21,10 @@ public class Controller {
 
     public void startMenu(Model model) {
         initializeFiles();
+        view.showGreeting();
+        view.showInstructions();
         view.showMainMenu();
         getUserInput(model);
-    }
-
-    private void initializeFiles() {
-        try {
-            File myObj = new File("data.json");
-            if (myObj.createNewFile()) {
-              FileWriter myWriter = new FileWriter("data.json");
-              myWriter.append("[{}]");
-              myWriter.close();
-              System.out.println("File created: " + myObj.getName());
-            } else {
-              System.out.println("File already exists.");
-            }
-          } catch (Exception e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-          }
     }
 
     private void getUserInput(Model model) {
@@ -55,6 +44,32 @@ public class Controller {
             getUserInput(model);
     }
 
+    private void createNewMember(Model model) {
+        view.createNewMember();
+        model.createNewUser(view.getName(), view.getPn(), ConsoleView.counter);
+        view.showMainMenu();
+    }
+
+    private void initializeFiles() {
+        try {
+            File myObj = new File("data.json");
+            if (myObj.createNewFile()) { //if file gets created
+              FileWriter myWriter = new FileWriter("data.json");
+              Gson gson = new Gson();
+              gson.toJson(new ArrayList<Member>(), myWriter);
+              myWriter.close();
+              System.out.println("File created: " + myObj.getName());
+            } else {
+              System.out.println("File already exists.");
+            }
+          } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+          }
+    }
+
+
+
     private void registerNewBoat(Model model) {
         Member selecedMember = new Member();
         view.showIdInput();
@@ -62,7 +77,7 @@ public class Controller {
         boatView.showInputForm();
         for (int i = 0; i < list.size(); i++) {
             if(list.get(i).getId() == view.getId()) {
-                selecedMember.set(list.get(i));
+                selecedMember = list.get(i);
             }
         }
         model.registerBoat(boatView.getLength(),boatView.getType(),boatView.getBoatId(),selecedMember);
@@ -105,11 +120,7 @@ public class Controller {
         view.showMainMenu();
     }
 
-    private void createNewMember(Model model) {
-        view.createNewMember();
-        model.createNewUser(view.getName(), view.getPn(), ConsoleView.counter);
-        view.showMainMenu();
-    }
+
 
     private void showListCompact(Model model) {
         model.readDataFromJson();
