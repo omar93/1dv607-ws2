@@ -18,6 +18,8 @@ public class Controller {
     private Scanner scanner = new Scanner(System.in);
     View.ConsoleView view = new ConsoleView();
     View.BoatView boatView = new View.BoatView();
+    List <Member> userList;
+    Member member;
 
     public void startMenu(Model model) {
         initializeFiles();
@@ -31,8 +33,8 @@ public class Controller {
         int choice = scanner.nextInt();
             switch (choice) {
                 case 1:  createNewMember(model);break;
-                case 2:  showListCompact(model);break;
-                case 3:  showListVerbose(model);break;
+                case 2:  showList(model,false);break;
+                case 3:  showList(model,true);break;
                 case 4:  deleteUser(model);break;
                 case 5:  changeMemberInfo(model);break;
                 case 6:  showMemberInfo(model);break;
@@ -45,9 +47,81 @@ public class Controller {
     }
 
     private void createNewMember(Model model) {
-        view.createNewMember();
-        model.createNewUser(view.getName(), view.getPn(), ConsoleView.counter);
+        member = view.showNewMemberInput();
+        model.createNewUser(member);
         view.showMainMenu();
+    }
+
+    private void showList(Model model, boolean isVerbose) {
+        userList = model.getAllMembers();
+        for (int i = 0; i < userList.size(); i++) {
+            Member member = userList.get(i);
+            if(isVerbose) {
+                view.printVerbose(member);
+            } else {
+                view.printCompact(member);
+            }
+        }
+        view.showMainMenu();
+    }
+
+    private void registerNewBoat(Model model) {
+        Member selecedMember = new Member();
+        view.showIdInput();
+        List <Member> list = model.getAllMembers();
+        boatView.showInputForm();
+        for (int i = 0; i < list.size(); i++) {
+            if(list.get(i).getId() == view.getId()) {
+                selecedMember = list.get(i);
+            }
+        }
+        model.registerBoat(boatView.getLength(),boatView.getType(),boatView.getBoatId(),selecedMember);
+    }
+
+    private void showMemberInfo(Model model) {
+        view.printVerbose(getUserById(model));
+        view.showMainMenu();
+    }
+
+    private void changeMemberInfo(Model model) {
+        member = getUserById(model);
+        userList = model.getAllMembers();
+        Member newMember = view.showNewMemberInput();
+        userList.set((userList.indexOf(member)+1) , newMember);
+        model.updateJsonData(userList);
+        view.showMainMenu();
+    }
+
+    private void deleteUser(Model model) {
+        view.showIdInput();
+        model.readDataFromJson();
+        List <Member> list = model.getAllMembers();
+        for (int i = 0; i < list.size(); i++) {
+            if(list.get(i).getId() == view.getId()) {
+                list.remove(i);
+            }
+        }
+        model.removeMember(list);
+        view.showMainMenu();
+    }
+
+
+    private Member getUserById(Model model) {
+        view.showIdInput();
+        model.readDataFromJson();
+        userList = model.getAllMembers();
+        for (int i = 0; i < userList.size(); i++) {
+            if(userList.get(i).getId() == view.getId()) {
+                return userList.get(i);
+            }
+        }
+        return null;
+    }
+
+    private void changeBoat(Model model) {
+    }
+
+    private void deleteBoat(Model model) {
     }
 
     private void initializeFiles() {
@@ -66,103 +140,6 @@ public class Controller {
             System.out.println("An error occurred.");
             e.printStackTrace();
           }
-    }
-
-
-
-    private void registerNewBoat(Model model) {
-        Member selecedMember = new Member();
-        view.showIdInput();
-        List <Member> list = model.getAllMembers();
-        boatView.showInputForm();
-        for (int i = 0; i < list.size(); i++) {
-            if(list.get(i).getId() == view.getId()) {
-                selecedMember = list.get(i);
-            }
-        }
-        model.registerBoat(boatView.getLength(),boatView.getType(),boatView.getBoatId(),selecedMember);
-    }
-
-    private void changeBoat(Model model) {
-    }
-
-    private void deleteBoat(Model model) {
-    }
-
-    /**
-     * 1) Allow user to enter id to find a user
-     * 2) loop through the data we get the entering id
-     * 3) when finding a match, we use the 'set' method on that Member object
-     * 4) update the json data
-     * 5) write changes to json file
-     */
-    private void changeMemberInfo(Model model) {
-        view.showIdInput();
-        model.readDataFromJson();
-        List <Member> list = model.getAllMembers();
-        for (int i = 0; i < list.size(); i++) {
-            if(list.get(i).getId() == view.getId()) {
-                list.get(i).setNewData("Gemberss", "1337");
-            }
-        }
-        model.updateJsonData(list);
-        view.showMainMenu();
-
-    }
-
-    // Look at a specific member’s information
-    private void showMemberInfo(Model model) {
-        view.showIdInput();
-        model.readDataFromJson();
-        List <Member> list = model.getAllMembers();
-        for (int i = 0; i < list.size(); i++) {
-            if(list.get(i).getId() == view.getId()) {
-                view.printVerbose(list.get(i));
-            }
-        }
-        view.showMainMenu();
-
-    }
-
-    private void deleteUser(Model model) {
-        view.showIdInput();
-        model.readDataFromJson();
-        List <Member> list = model.getAllMembers();
-        for (int i = 0; i < list.size(); i++) {
-            if(list.get(i).getId() == view.getId()) {
-                list.remove(i);
-            }
-        }
-        model.removeMember(list);
-        view.showMainMenu();
-    }
-
-
-
-    private void showListCompact(Model model) {
-        model.readDataFromJson();
-        List <Member> list = model.getAllMembers();
-        if(list.size() == 0) {
-            System.out.println("No users");
-        } else {
-            for (int i = 0; i < list.size(); i++) {
-                view.printCompact(list.get(i));
-            }
-        }
-        view.showMainMenu();
-    }
-
-    private void showListVerbose(Model model) {
-        model.readDataFromJson();
-        List <Member> list = model.getAllMembers();
-        if(list.size() == 0) {
-            System.out.println("No users");
-        } else {
-            for (int i = 0; i < list.size(); i++) {
-                view.printVerbose(list.get(i));
-            }
-        }
-        view.showMainMenu();
     }
 
 }

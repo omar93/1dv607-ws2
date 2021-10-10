@@ -7,10 +7,10 @@ public class Member {
     
     private String name;
     private String pn;
-    private int id;
+    private String id;
     private List<Boat> boatList = new ArrayList<Boat>();
 
-    public Member(String name, String pn,int id) {
+    public Member(String name, String pn,String id) {
 		this.name = name;
 		this.pn = pn;
         this.id = id;
@@ -47,7 +47,7 @@ public class Member {
 	public String getPn() { return this.pn; }
 	public void setPn(String newPn) { this.pn = newPn;}
 
-    public int getId() { return this.id; }
+    public String getId() { return this.id; }
 
     // Get BoatAmmount
 	public int getBoats() { return this.boatList.size(); }

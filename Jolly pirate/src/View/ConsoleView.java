@@ -11,8 +11,9 @@ public class ConsoleView extends Menu {
     private Scanner scanner = new Scanner(System.in);
     private String name;
     private String pn;
-    private int id;
+    private String id;
     public static int counter;
+    // private Member member;
         
     public void showMainMenu() {
         System.out.println("\n"+messages.getMenuAlternatives());
@@ -26,18 +27,23 @@ public class ConsoleView extends Menu {
         showWithBorder(messages.getInstructions());
     }
 
-    public void createNewMember() {
+    public Member showNewMemberInput() {
         counter++;
         System.out.println("Enter name:");
-        this.name = NameFromScanner();
+        name = NameFromScanner();
         System.out.println("Enter personal number:");
-		this.pn = pnScanner();
+		pn = pnScanner();
         System.out.println("New user: " + name+" PN: "+pn);
+        return new Member(name,pn,"13");
     }
 
     public void showIdInput() {
         System.out.println("Enter user ID:");
         this.id = idScanner();
+    }
+
+    public void showError() {
+        System.out.println("No users");
     }
 
     public void printCompact(Member member) {
@@ -46,7 +52,7 @@ public class ConsoleView extends Menu {
         System.out.println("Boats: "+member.getBoats());
         System.out.println("------------------------");
     }
-
+    
     public void printVerbose(Member member) {
         System.out.println("______________________________________");
         System.out.println("Name: "+member.getName());
@@ -74,8 +80,8 @@ public class ConsoleView extends Menu {
 	}
 
     // Scans id and returns it
-	private int idScanner() {
-		int id = scanner.nextInt();
+	private String idScanner() {
+		String id = scanner.nextLine();
 		return id;
 	}
 
@@ -85,7 +91,7 @@ public class ConsoleView extends Menu {
     public String getPn() {
         return this.pn;
     }
-    public int getId() {
+    public String getId() {
         return this.id;
     }
 

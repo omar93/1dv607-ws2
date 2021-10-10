@@ -14,12 +14,10 @@ public class Model {
   
     private List <Member> memberList = new ArrayList<Member>();
 
-    public void createNewUser(String name, String pn,int counter) {
-      Member member = new Member(name,pn,counter);
+    public void createNewUser(Member member) {
       readDataFromJson();
       memberList.add(member);
       updateJsonData(memberList);
-      
     }
 
     public void registerBoat(double length, String type, int id, Member m) {
@@ -60,7 +58,8 @@ public class Model {
     }
     
     public List<Member> getAllMembers() {
-      return this.memberList;
+      readDataFromJson();
+      return memberList;
     }
 
     public void removeMember(List<Member> list) {
