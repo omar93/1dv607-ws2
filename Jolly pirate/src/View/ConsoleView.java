@@ -39,7 +39,7 @@ public class ConsoleView extends Menu {
 
     public void showIdInput() {
         System.out.println("Enter user ID:");
-        this.id = idScanner();
+        id = idScanner();
     }
 
     public void showError() {

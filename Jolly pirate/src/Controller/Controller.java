@@ -5,7 +5,7 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.io.IOException;  // Import the IOException class to handle errors
+import java.io.IOException;
 
 import com.google.gson.Gson;
 
@@ -79,16 +79,26 @@ public class Controller {
     }
 
     private void showMemberInfo(Model model) {
-        view.printVerbose(getUserById(model));
+        try {
+            view.printVerbose(getUserById(model));
+
+        } catch (Exception e) {
+            System.out.println("No user found");
+        }
         view.showMainMenu();
     }
 
     private void changeMemberInfo(Model model) {
-        member = getUserById(model);
-        userList = model.getAllMembers();
-        Member newMember = view.showNewMemberInput();
-        userList.set((userList.indexOf(member)+1) , newMember);
-        model.updateJsonData(userList);
+        try {
+            member = getUserById(model);
+            userList = model.getAllMembers();
+            Member newMember = view.showNewMemberInput();
+            userList.set((userList.indexOf(member)+1) , newMember);
+            model.updateJsonData(userList);
+        } catch (Exception e) {
+            System.out.println("No user with the id: " + view.getId());
+            System.out.println("No changes done");
+        }
         view.showMainMenu();
     }
 
@@ -111,7 +121,7 @@ public class Controller {
         model.readDataFromJson();
         userList = model.getAllMembers();
         for (int i = 0; i < userList.size(); i++) {
-            if(userList.get(i).getId() == view.getId()) {
+            if(userList.get(i).getId().compareTo(view.getId()) == 0) {
                 return userList.get(i);
             }
         }

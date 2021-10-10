@@ -21,6 +21,7 @@ public class Member {
     public Member() {
         this.name = "Namn";
         this.pn = "123456";
+        this.id = "23";
         boatList.add(new Boat());
         boatList.add(new Boat());
     }
