@@ -7,23 +7,29 @@ public class Member {
     
     private String name;
     private String pn;
-	private int boats = 5;
     private int id;
-    private List<Integer> boatList = new ArrayList<Integer>();
+    private List<Boat> boatList = new ArrayList<Boat>();
 
     public Member(String name, String pn,int id) {
 		this.name = name;
 		this.pn = pn;
-        this.boats = 6;
         this.id = id;
-        boatList.add(2);
+        boatList.add(new Boat());
+        boatList.add(new Boat());
 	}
 
     public Member() {
         this.name = "Namn";
         this.pn = "123456";
-        this.boats = 0;
-        boatList.add(3);
+        boatList.add(new Boat());
+        boatList.add(new Boat());
+    }
+
+    public void setNewData(String name, String pn) {
+        this.name = name;
+		this.pn = pn;
+        boatList.add(new Boat());
+        boatList.add(new Boat());
     }
 
     public void set(Member m) {
@@ -43,12 +49,10 @@ public class Member {
 
     public int getId() { return this.id; }
 
-    // Get & Set BoatAmmount
-	public int getBoats() { return this.boats; }
-	public void setBoats(int newBoatAmmount) { this.boats = newBoatAmmount; }
-
+    // Get BoatAmmount
+	public int getBoats() { return this.boatList.size(); }
 
     // Get & Set Boatlist
-    public List<Integer> getBoat() { return this.boatList; }
-    public void addBoat(Boat b) { boatList.add(33); }
+    public List<Boat> getBoat() { return this.boatList; }
+    public void addBoat(Boat b) { boatList.add(b); }
 }

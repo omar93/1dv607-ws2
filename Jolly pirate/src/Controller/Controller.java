@@ -89,8 +89,25 @@ public class Controller {
     private void deleteBoat(Model model) {
     }
 
-
+    /**
+     * 1) Allow user to enter id to find a user
+     * 2) loop through the data we get the entering id
+     * 3) when finding a match, we use the 'set' method on that Member object
+     * 4) update the json data
+     * 5) write changes to json file
+     */
     private void changeMemberInfo(Model model) {
+        view.showIdInput();
+        model.readDataFromJson();
+        List <Member> list = model.getAllMembers();
+        for (int i = 0; i < list.size(); i++) {
+            if(list.get(i).getId() == view.getId()) {
+                list.get(i).setNewData("Gemberss", "1337");
+            }
+        }
+        model.updateJsonData(list);
+        view.showMainMenu();
+
     }
 
     // Look at a specific member’s information

@@ -15,7 +15,7 @@ public class ConsoleView extends Menu {
     public static int counter;
         
     public void showMainMenu() {
-        System.out.println(messages.getMenuAlternatives());
+        System.out.println("\n"+messages.getMenuAlternatives());
     }
 
     public void showGreeting() {
@@ -48,11 +48,17 @@ public class ConsoleView extends Menu {
     }
 
     public void printVerbose(Member member) {
+        System.out.println("______________________________________");
         System.out.println("Name: "+member.getName());
         System.out.println("Personal number: "+member.getPn());
         System.out.println("ID: "+member.getId());
         System.out.println("Boats: "+member.getBoats());
-        System.out.println("------------------------");
+        System.out.println("Boats information:\n");
+        for (int i = 0; i < member.getBoat().size(); i++) {
+            System.out.println("    Length: " + member.getBoat().get(i).getLength());
+            System.out.println("    Type: " + member.getBoat().get(i).getType());
+            System.out.println("-------------------------------");
+        }
     }
 
     // Scans name returns it

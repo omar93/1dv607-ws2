@@ -17,8 +17,9 @@ public class Model {
     public void createNewUser(String name, String pn,int counter) {
       Member member = new Member(name,pn,counter);
       readDataFromJson();
-      updateJsonData(member);
-      writeToJsonFile();
+      memberList.add(member);
+      updateJsonData(memberList);
+      
     }
 
     public void registerBoat(double length, String type, int id, Member m) {
@@ -28,8 +29,9 @@ public class Model {
       // writeToJsonFile();
     }
 
-    public void updateJsonData(Member member) {
-      memberList.add(member);
+    public void updateJsonData(List <Member> member) {
+      memberList = member;
+      writeToJsonFile();
     }
 
     public void readDataFromJson() {
