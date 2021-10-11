@@ -35,7 +35,8 @@ public class Controller {
     }
 
     private void getUserInput(Model model) {
-        int choice = scanner.nextInt();
+        try {
+            int choice = scanner.nextInt();
             switch (choice) {
                 case 1:  createNewMember();break;
                 case 2:  showList(false);break;
@@ -49,49 +50,84 @@ public class Controller {
                 case 0:  System.exit(0);break;
             }
             getUserInput(model);
+        } catch (Exception e) {
+            view.wrongInputError();
+        }
+    }
+
+    private void registerNewBoat() {
+        try {
+            member = getUserById();
+            if(member == null) {
+                view.noUserError();
+                view.showMainMenu();
+            } else {
+                userList = model.getAllMembers();
+                boat = boatView.showNewBoatForm();
+                Member newMember = member;
+                newMember.addBoat(boat);
+                for (int i = 0; i < userList.size(); i++) {
+                    if(userList.get(i).getId().compareTo(member.getId()) == 0) {
+                        userList.set(i , newMember);
+                        model.updateJsonData(userList);
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    private void changeBoat() {
+        Member member = getUserById();
+        userList = model.getAllMembers();
+        if(userList.size() == 0) {
+            view.noUserError();
+            view.showMainMenu();
+        } else {
+            List <Boat> boatList = member.getBoats();
+            Boat oldBoat = model.getDesiredBoat(boatList,boatView.printBoats(boatList));
+            boatList = model.updateBoatList(oldBoat,boatList,boatView.showNewBoatForm());
+            Member newMember = member;
+            newMember.updateBoatInfo(boatList);
+            model.changeMember(member, newMember);
+        }
+
+        
     }
 
     private void deleteBoat() {
         member = getUserById();
-        boatList = member.getBoats();
-        for (int i = 0; i < boatList.size(); i++) {
-            boatView.showBoatsInformation(boatList.get(i));
+        if(member == null) {
+            view.noUserError();
+            view.showMainMenu();
+        } else {
+            model.removeBoat(member,boatView.printBoats(member.getBoats()));
+            view.showMainMenu();
         }
-        boatNumber = boatView.showBoatIdInput();
-        int boatNumberInt = Integer.parseInt(boatNumber)-1;
-        Boat currentBoat = boatList.get(boatNumberInt);
-        // Boat newBoat = boatView.showInputForm();
-        // boatList.set((boatList.indexOf(currentBoat)), newBoat);// change this row to delete
-        boatList.remove(currentBoat);
-        member.updateBoatInfo(boatList);
-        Member newMember = member;
-        userList.set((userList.indexOf(member)) , newMember); 
-        model.updateJsonData(userList);
+
+    }
+
+    private void showMemberInfo() {
+        try {
+            view.printVerbose(getUserById());
+
+        } catch (Exception e) {
+            view.noUserError();
+        }
         view.showMainMenu();
     }
 
-    private void changeBoat() {
-        member = getUserById();
-        boatList = member.getBoats();
-        boatList.set((boatList.indexOf(getDesiredBoat(member))), boatView.showInputForm());
-        member.updateBoatInfo(boatList);
-        updateUserList(userList);
-    }
-
-    private Boat getDesiredBoat(Member member) {
-        boatList = member.getBoats();
-        for (int i = 0; i < boatList.size(); i++) {
-            boatView.showBoatsInformation(boatList.get(i));
+    private Member getUserById() {
+        userID = view.showIdInput();
+        userList = model.getAllMembers();
+        for (int i = 0; i < userList.size(); i++) {
+            if(userList.get(i).getId().compareTo(userID) == 0) {
+                return userList.get(i);
+            }
         }
-        boatNumber = boatView.showBoatIdInput();
-        return boatList.get(Integer.parseInt(boatNumber)-1);
-    }
-
-    private void createNewMember() {
-        id = io.getNewMemberID();
-        member = view.showNewMemberInput(String.valueOf(id));
-        model.createNewUser(member);
-        view.showMainMenu();
+        return null;
     }
 
     private void showList(boolean isVerbose) {
@@ -107,80 +143,32 @@ public class Controller {
         view.showMainMenu();
     }
 
-    private void registerNewBoat() {
-        try {
-            member = getUserById(); // correct user
-            userList = model.getAllMembers(); // correct userlist
-            boat = boatView.showInputForm(); // correct boat
-            Member newMember = member;
-            newMember.addBoat(boat);
-            for (int i = 0; i < userList.size(); i++) {
-                if(userList.get(i).getId().compareTo(member.getId()) == 0) {
-                    userList.set(i , newMember);
-                    model.updateJsonData(userList);
-                }
-            }
-        } catch (Exception e) {
-            System.out.println(e);
-        }
+    private void createNewMember() {
+        model.createNewUser(view.showNewMemberInput(String.valueOf(io.getNewMemberID())));
+        view.showMainMenu();
     }
 
     private void changeMemberInfo() {
-        try {
-            member = getUserById();
-            userList = model.getAllMembers();
-            Member newMember = view.showNewMemberInput(member.getId());
-            for (int i = 0; i < userList.size(); i++) {
-                if(userList.get(i).getId().compareTo(member.getId()) == 0) {
-                    userList.set(i , newMember);
-                    model.updateJsonData(userList);
-                }
-            }
-        } catch (Exception e) {
-            System.out.println("No user with the id: " + member.getId());
-            System.out.println("No changes done");
+        Member member = getUserById();
+        if(member == null) {
+            view.noUserError();
+            view.showMainMenu();
+        } else {
+            model.changeMember(member,view.showNewMemberInput(member.getId()));
+            view.showMainMenu();
         }
-        view.showMainMenu();
-    }
 
-    private void showMemberInfo() {
-        try {
-            view.printVerbose(getUserById());
-
-        } catch (Exception e) {
-            System.out.println("No user found");
-        }
-        view.showMainMenu();
     }
 
     private void deleteUser() {
-        userID = view.showIdInput();
-        userList = model.getAllMembers();
-        for (int i = 0; i < userList.size(); i++) {
-            if(userList.get(i).getId().compareTo(userID) == 0) {
-                userList.remove(i);
-            }
+        Member member = getUserById();
+        if(member == null) {
+            view.noUserError();
+            view.showMainMenu();
+        } else {
+            model.removeUser(member.getId());
+            view.showMainMenu();
         }
-        model.updateJsonData(userList);
-        view.showMainMenu();
-    }
-
-
-    private Member getUserById() {
-        userID = view.showIdInput();
-        userList = model.getAllMembers();
-        for (int i = 0; i < userList.size(); i++) {
-            if(userList.get(i).getId().compareTo(userID) == 0) {
-                return userList.get(i);
-            }
-        }
-        return null;
-    }
-
-    private void updateUserList(List <Member> members) {
-        userList.set((userList.indexOf(member)) , member);
-        model.updateJsonData(members);
-        view.showMainMenu();
     }
 
 }

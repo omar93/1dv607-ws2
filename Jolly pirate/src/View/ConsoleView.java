@@ -42,10 +42,6 @@ public class ConsoleView extends Menu {
         return id;
     }
 
-    public void showError() {
-        System.out.println("No users");
-    }
-
     public void printCompact(Member member) {
         System.out.println("Name: "+member.getName());
         System.out.println("ID: "+member.getId());
@@ -80,6 +76,26 @@ public class ConsoleView extends Menu {
 	private String idScanner() {
 		return scanner.nextLine();
 	}
+
+    // Prints noUserError message
+    public void noUserError() {
+        System.out.println("No user found");
+    }
+
+    // Prints wrong inputType message
+    public void wrongInputError() {
+        System.out.println("Not a number");
+    }
+
+    // Prints file creation sucess message
+    public void fileSucess (String file) {
+        System.out.println("File created: " + file);
+    }
+
+    // Prints file already exists message
+    public void fileExists () {
+        System.out.println("File already exists.");
+    }
 
 
 }

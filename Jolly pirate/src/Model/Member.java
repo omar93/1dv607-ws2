@@ -22,8 +22,6 @@ public class Member {
         this.id = "23";
     }
 
-
-
     public void setNewData(String name, String pn) {
         this.name = name;
 		this.pn = pn;
@@ -49,7 +47,7 @@ public class Member {
     // Get BoatAmmount
 	public int getBoatAmmount() { return this.boatList.size(); }
 
-    // Get & Set Boatlist
+    // Get, Set & Add to Boatlist
     public List<Boat> getBoats() { return this.boatList; }
     public void addBoat(Boat b) { boatList.add(b); }
     public void updateBoatInfo(List <Boat> newBoatList) { boatList = newBoatList; }

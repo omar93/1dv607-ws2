@@ -10,10 +10,12 @@ import com.google.gson.Gson;
 
 import Model.Member;
 import Model.Model;
+import View.ConsoleView;
 
 public class IO {
 
     Model model;
+    ConsoleView view = new ConsoleView();
     List <Member> userList;
 
     public IO (Model model) {
@@ -41,12 +43,11 @@ public class IO {
               Gson gson = new Gson();
               gson.toJson(new ArrayList<Member>(), myWriter);
               myWriter.close();
-              System.out.println("File created: " + myObj.getName());
+              view.fileSucess(myObj.getName());
             } else {
-              System.out.println("File already exists.");
+              view.fileExists();
             }
           } catch (IOException e) {
-            System.out.println("An error occurred.");
             e.printStackTrace();
           }
     }
