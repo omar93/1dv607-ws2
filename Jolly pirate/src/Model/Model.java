@@ -19,13 +19,6 @@ public class Model {
     updateJsonData(memberList);
   }
 
-  public void registerBoat(double length, String type, int id, Member m) {
-    // Boat boat = new Boat(length, type);
-    // m.addBoat(boat);
-    // updateJsonData(m);
-    // writeToJsonFile();
-  }
-
   public void updateJsonData(List <Member> members) {
     memberList = members;
     writeToJsonFile();

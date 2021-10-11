@@ -14,12 +14,9 @@ public class Controller {
     View.ConsoleView view = new ConsoleView();
     View.BoatView boatView = new View.BoatView();
     List <Member> userList;
-    List <Boat> boatList;
     Member member;
     Boat boat;
-    String boatNumber;
     String userID;
-    int id;
     IO io;
     Model model;
 
