@@ -27,8 +27,8 @@ public class Model {
       // writeToJsonFile();
     }
 
-    public void updateJsonData(List <Member> member) {
-      memberList = member;
+    public void updateJsonData(List <Member> members) {
+      memberList = members;
       writeToJsonFile();
     }
 

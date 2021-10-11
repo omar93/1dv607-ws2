@@ -1,14 +1,9 @@
 package Controller;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.io.IOException;
 
-import com.google.gson.Gson;
-
+import Model.Boat;
 import Model.Member;
 import Model.Model;
 import View.ConsoleView;
@@ -19,10 +14,20 @@ public class Controller {
     View.ConsoleView view = new ConsoleView();
     View.BoatView boatView = new View.BoatView();
     List <Member> userList;
+    List <Boat> boatList;
     Member member;
+    Boat boat;
+    String boatNumber;
+    String userID;
+    int id;
+    IO io;
+    Model model;
 
-    public void startMenu(Model model) {
-        initializeFiles();
+    public void startMenu(Model m) {
+        model = m;
+        io = new IO(model);
+        IO io = new IO(model);
+        io.initializeFiles();
         view.showGreeting();
         view.showInstructions();
         view.showMainMenu();
@@ -32,27 +37,51 @@ public class Controller {
     private void getUserInput(Model model) {
         int choice = scanner.nextInt();
             switch (choice) {
-                case 1:  createNewMember(model);break;
-                case 2:  showList(model,false);break;
-                case 3:  showList(model,true);break;
-                case 4:  deleteUser(model);break;
-                case 5:  changeMemberInfo(model);break;
-                case 6:  showMemberInfo(model);break;
-                case 7:  registerNewBoat(model);break;
-                case 8:  deleteBoat(model);break;
-                case 9:  changeBoat(model);break;
+                case 1:  createNewMember();break;
+                case 2:  showList(false);break;
+                case 3:  showList(true);break;
+                case 4:  deleteUser();break;
+                case 5:  changeMemberInfo();break;
+                case 6:  showMemberInfo();break;
+                case 7:  registerNewBoat();break;
+                case 8:  deleteBoat();break;
+                case 9:  changeBoat();break;
                 case 0:  System.exit(0);break;
             }
             getUserInput(model);
     }
 
-    private void createNewMember(Model model) {
-        member = view.showNewMemberInput();
+ 
+
+    private void changeBoat() {
+        member = getUserById();
+        boatList = member.getBoats();
+        for (int i = 0; i < boatList.size(); i++) {
+            boatView.showBoatsInformation(boatList.get(i));
+        }
+        boatNumber = boatView.showBoatIdInput();
+        int boatNumberInt = Integer.parseInt(boatNumber)-1;
+        Boat currentBoat = boatList.get(boatNumberInt);
+        Boat newBoat = boatView.showInputForm();
+        boatList.set((boatList.indexOf(currentBoat)), newBoat);
+        member.updateBoatInfo(boatList);
+        Member newMember = member;
+        userList.set((userList.indexOf(member)) , newMember);
+        model.updateJsonData(userList);
+        view.showMainMenu();
+    }
+
+    private void deleteBoat() {
+    }
+
+    private void createNewMember() {
+        id = io.getNewMemberID();
+        member = view.showNewMemberInput(String.valueOf(id));
         model.createNewUser(member);
         view.showMainMenu();
     }
 
-    private void showList(Model model, boolean isVerbose) {
+    private void showList(boolean isVerbose) {
         userList = model.getAllMembers();
         for (int i = 0; i < userList.size(); i++) {
             Member member = userList.get(i);
@@ -65,22 +94,45 @@ public class Controller {
         view.showMainMenu();
     }
 
-    private void registerNewBoat(Model model) {
-        Member selecedMember = new Member();
-        view.showIdInput();
-        List <Member> list = model.getAllMembers();
-        boatView.showInputForm();
-        for (int i = 0; i < list.size(); i++) {
-            if(list.get(i).getId() == view.getId()) {
-                selecedMember = list.get(i);
+    private void registerNewBoat() {
+        try {
+            member = getUserById(); // correct user
+            userList = model.getAllMembers(); // correct userlist
+            boat = boatView.showInputForm(); // correct boat
+            Member newMember = member;
+            newMember.addBoat(boat);
+            for (int i = 0; i < userList.size(); i++) {
+                if(userList.get(i).getId().compareTo(member.getId()) == 0) {
+                    userList.set(i , newMember);
+                    model.updateJsonData(userList);
+                }
             }
+        } catch (Exception e) {
+            System.out.println(e);
         }
-        model.registerBoat(boatView.getLength(),boatView.getType(),boatView.getBoatId(),selecedMember);
     }
 
-    private void showMemberInfo(Model model) {
+    private void changeMemberInfo() {
         try {
-            view.printVerbose(getUserById(model));
+            member = getUserById();
+            userList = model.getAllMembers();
+            Member newMember = view.showNewMemberInput(member.getId());
+            for (int i = 0; i < userList.size(); i++) {
+                if(userList.get(i).getId().compareTo(member.getId()) == 0) {
+                    userList.set(i , newMember);
+                    model.updateJsonData(userList);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("No user with the id: " + member.getId());
+            System.out.println("No changes done");
+        }
+        view.showMainMenu();
+    }
+
+    private void showMemberInfo() {
+        try {
+            view.printVerbose(getUserById());
 
         } catch (Exception e) {
             System.out.println("No user found");
@@ -88,68 +140,28 @@ public class Controller {
         view.showMainMenu();
     }
 
-    private void changeMemberInfo(Model model) {
-        try {
-            member = getUserById(model);
-            userList = model.getAllMembers();
-            Member newMember = view.showNewMemberInput();
-            userList.set((userList.indexOf(member)+1) , newMember);
-            model.updateJsonData(userList);
-        } catch (Exception e) {
-            System.out.println("No user with the id: " + view.getId());
-            System.out.println("No changes done");
-        }
-        view.showMainMenu();
-    }
-
-    private void deleteUser(Model model) {
-        view.showIdInput();
-        model.readDataFromJson();
-        List <Member> list = model.getAllMembers();
-        for (int i = 0; i < list.size(); i++) {
-            if(list.get(i).getId() == view.getId()) {
-                list.remove(i);
-            }
-        }
-        model.removeMember(list);
-        view.showMainMenu();
-    }
-
-
-    private Member getUserById(Model model) {
-        view.showIdInput();
-        model.readDataFromJson();
+    private void deleteUser() {
+        userID = view.showIdInput();
         userList = model.getAllMembers();
         for (int i = 0; i < userList.size(); i++) {
-            if(userList.get(i).getId().compareTo(view.getId()) == 0) {
+            if(userList.get(i).getId().compareTo(userID) == 0) {
+                userList.remove(i);
+            }
+        }
+        model.updateJsonData(userList);
+        view.showMainMenu();
+    }
+
+
+    private Member getUserById() {
+        userID = view.showIdInput();
+        userList = model.getAllMembers();
+        for (int i = 0; i < userList.size(); i++) {
+            if(userList.get(i).getId().compareTo(userID) == 0) {
                 return userList.get(i);
             }
         }
         return null;
-    }
-
-    private void changeBoat(Model model) {
-    }
-
-    private void deleteBoat(Model model) {
-    }
-
-    private void initializeFiles() {
-        try {
-            File myObj = new File("data.json");
-            if (myObj.createNewFile()) { //if file gets created
-              FileWriter myWriter = new FileWriter("data.json");
-              Gson gson = new Gson();
-              gson.toJson(new ArrayList<Member>(), myWriter);
-              myWriter.close();
-              System.out.println("File created: " + myObj.getName());
-            } else {
-              System.out.println("File already exists.");
-            }
-          } catch (IOException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-          }
     }
 
 }

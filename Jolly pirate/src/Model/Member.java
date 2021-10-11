@@ -14,17 +14,15 @@ public class Member {
 		this.name = name;
 		this.pn = pn;
         this.id = id;
-        boatList.add(new Boat());
-        boatList.add(new Boat());
 	}
 
     public Member() {
         this.name = "Namn";
         this.pn = "123456";
         this.id = "23";
-        boatList.add(new Boat());
-        boatList.add(new Boat());
     }
+
+
 
     public void setNewData(String name, String pn) {
         this.name = name;
@@ -36,8 +34,6 @@ public class Member {
     public void set(Member m) {
         this.name = m.name;
 		this.pn = m.pn;
-        // this.boats = m.getBoats();
-        // this.id = m.getId();
     }
 
     // Setter and Getter for name
@@ -51,9 +47,10 @@ public class Member {
     public String getId() { return this.id; }
 
     // Get BoatAmmount
-	public int getBoats() { return this.boatList.size(); }
+	public int getBoatAmmount() { return this.boatList.size(); }
 
     // Get & Set Boatlist
-    public List<Boat> getBoat() { return this.boatList; }
+    public List<Boat> getBoats() { return this.boatList; }
     public void addBoat(Boat b) { boatList.add(b); }
+    public void updateBoatInfo(List <Boat> newBoatList) { boatList = newBoatList; }
 }

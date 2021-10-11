@@ -8,7 +8,7 @@ public class Boat {
     private String type;
 
     // Constructor
-    public Boat(double length, String type) {
+    public Boat(String type, double length) {
         this.length = length;
         this.type = type;
     }

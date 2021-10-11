@@ -27,19 +27,19 @@ public class ConsoleView extends Menu {
         showWithBorder(messages.getInstructions());
     }
 
-    public Member showNewMemberInput() {
-        counter++;
+    public Member showNewMemberInput(String id) {
         System.out.println("Enter name:");
         name = NameFromScanner();
         System.out.println("Enter personal number:");
 		pn = pnScanner();
         System.out.println("New user: " + name+" PN: "+pn);
-        return new Member(name,pn,"13");
+        return new Member(name,pn,id);
     }
 
-    public void showIdInput() {
+    public String showIdInput() {
         System.out.println("Enter user ID:");
         id = idScanner();
+        return id;
     }
 
     public void showError() {
@@ -49,56 +49,37 @@ public class ConsoleView extends Menu {
     public void printCompact(Member member) {
         System.out.println("Name: "+member.getName());
         System.out.println("ID: "+member.getId());
-        System.out.println("Boats: "+member.getBoats());
+        System.out.println("Boats: "+member.getBoatAmmount());
         System.out.println("------------------------");
     }
     
     public void printVerbose(Member member) {
-        System.out.println("______________________________________");
         System.out.println("Name: "+member.getName());
         System.out.println("Personal number: "+member.getPn());
         System.out.println("ID: "+member.getId());
-        System.out.println("Boats: "+member.getBoats());
-        System.out.println("Boats information:\n");
-        for (int i = 0; i < member.getBoat().size(); i++) {
-            System.out.println("    Length: " + member.getBoat().get(i).getLength());
-            System.out.println("    Type: " + member.getBoat().get(i).getType());
-            System.out.println("-------------------------------");
+        System.out.println("Boats: "+member.getBoatAmmount());
+        System.out.println("\nBoats information:\n");
+        for (int i = 0; i < member.getBoats().size(); i++) {
+            System.out.println("    Length: " + member.getBoats().get(i).getLength()+"M");
+            System.out.println("    Type: " + member.getBoats().get(i).getType()+"\n");
         }
+        System.out.println("______________________________________");
     }
 
     // Scans name returns it
 	private String NameFromScanner() {
-		String name = scanner.nextLine();
-		return name;
+		return scanner.nextLine();
 	}
 
     // Scans pn and returns it
 	private String pnScanner() {
-		String pn = scanner.nextLine();
-		return pn;
+		return scanner.nextLine();
 	}
 
     // Scans id and returns it
 	private String idScanner() {
-		String id = scanner.nextLine();
-		return id;
+		return scanner.nextLine();
 	}
-
-    public String getName() {
-        return this.name;
-    }
-    public String getPn() {
-        return this.pn;
-    }
-    public String getId() {
-        return this.id;
-    }
-
-
-
-
-
 
 
 }
