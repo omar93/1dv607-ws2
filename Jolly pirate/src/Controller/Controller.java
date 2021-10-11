@@ -73,19 +73,18 @@ public class Controller {
     private void changeBoat() {
         member = getUserById();
         boatList = member.getBoats();
+        boatList.set((boatList.indexOf(getDesiredBoat(member))), boatView.showInputForm());
+        member.updateBoatInfo(boatList);
+        updateUserList(userList);
+    }
+
+    private Boat getDesiredBoat(Member member) {
+        boatList = member.getBoats();
         for (int i = 0; i < boatList.size(); i++) {
             boatView.showBoatsInformation(boatList.get(i));
         }
         boatNumber = boatView.showBoatIdInput();
-        int boatNumberInt = Integer.parseInt(boatNumber)-1;
-        Boat currentBoat = boatList.get(boatNumberInt);
-        Boat newBoat = boatView.showInputForm();
-        boatList.set((boatList.indexOf(currentBoat)), newBoat);
-        member.updateBoatInfo(boatList);
-        Member newMember = member;
-        userList.set((userList.indexOf(member)) , newMember);
-        model.updateJsonData(userList);
-        view.showMainMenu();
+        return boatList.get(Integer.parseInt(boatNumber)-1);
     }
 
     private void createNewMember() {
@@ -176,6 +175,12 @@ public class Controller {
             }
         }
         return null;
+    }
+
+    private void updateUserList(List <Member> members) {
+        userList.set((userList.indexOf(member)) , member);
+        model.updateJsonData(members);
+        view.showMainMenu();
     }
 
 }
