@@ -51,7 +51,24 @@ public class Controller {
             getUserInput(model);
     }
 
- 
+    private void deleteBoat() {
+        member = getUserById();
+        boatList = member.getBoats();
+        for (int i = 0; i < boatList.size(); i++) {
+            boatView.showBoatsInformation(boatList.get(i));
+        }
+        boatNumber = boatView.showBoatIdInput();
+        int boatNumberInt = Integer.parseInt(boatNumber)-1;
+        Boat currentBoat = boatList.get(boatNumberInt);
+        // Boat newBoat = boatView.showInputForm();
+        // boatList.set((boatList.indexOf(currentBoat)), newBoat);// change this row to delete
+        boatList.remove(currentBoat);
+        member.updateBoatInfo(boatList);
+        Member newMember = member;
+        userList.set((userList.indexOf(member)) , newMember); 
+        model.updateJsonData(userList);
+        view.showMainMenu();
+    }
 
     private void changeBoat() {
         member = getUserById();
@@ -69,9 +86,6 @@ public class Controller {
         userList.set((userList.indexOf(member)) , newMember);
         model.updateJsonData(userList);
         view.showMainMenu();
-    }
-
-    private void deleteBoat() {
     }
 
     private void createNewMember() {
